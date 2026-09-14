@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Apple Silicon
+          - platform: macos-latest
+            args: "--target aarch64-apple-darwin"
+            targets: "aarch64-apple-darwin"
+          # Intel
+          - platform: macos-latest
+            args: "--target x86_64-apple-darwin"
+            targets: "x86_64-apple-darwin"
+          - platform: windows-latest
+            args: ""
+            targets: ""
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.targets }}
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and attach to release
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Dosatsu ${{ github.ref_name }}"
+          releaseBody: "See CHANGELOG.md for what's new."
+          # Drafted, not published — review the generated release on GitHub and
+          # hit Publish yourself once both platforms have finished building.
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}

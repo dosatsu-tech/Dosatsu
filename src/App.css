@@ -1,0 +1,1570 @@
+:root {
+  color-scheme: dark;
+
+  /* Surfaces — warm ink, not cool charcoal */
+  --bg: #1a1613;
+  --bg-panel: #211c18;
+  --bg-elevated: #2a231d;
+  --bg-canvas: #120f0d;
+  --border: #3a322a;
+  --border-soft: #2d2720;
+
+  /* Text — warm paper, not clinical white */
+  --text: #ece5d8;
+  --text-muted: #a89a89;
+
+  /* Accent — clay / terracotta, with a moss secondary for status */
+  --accent: #c1794d;
+  --accent-strong: #d68f5f;
+  --accent-contrast: #1a1613;
+  --success: #8ba372;
+  --danger: #c1584a;
+
+  /* Shape — square and minimal, only a hint of curvature */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    "Noto Sans", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  transition: background-color 0.2s ease;
+}
+
+.app.drag-over {
+  background: rgba(193, 121, 77, 0.08);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 6px 13px;
+  font: inherit;
+  font-size: 13px;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, color 0.15s ease, filter 0.15s ease;
+}
+
+button:hover {
+  filter: brightness(1.2);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+button:disabled:hover {
+  filter: none;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 7px;
+  vertical-align: -2px;
+  border: 2px solid rgba(0, 0, 0, 0.22);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1.6s;
+  }
+}
+
+button.primary:hover {
+  background: var(--accent-strong);
+}
+
+button.active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+button.primary:hover,
+button.active:hover,
+button.link-button:hover {
+  filter: none;
+}
+
+button.export-button--exporting,
+button.export-button--exporting:hover {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+}
+
+button.export-button--done,
+button.export-button--done:hover {
+  background: var(--success);
+  color: var(--accent-contrast);
+}
+
+button.export-button--error,
+button.export-button--error:hover {
+  background: var(--danger);
+  color: var(--text);
+}
+
+button.link-button {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+}
+
+button.link-button:hover {
+  color: var(--accent-strong);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+select,
+input[type="text"],
+input[type="number"] {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+
+select:focus-visible,
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: pan-y;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--border);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  background: var(--accent-strong);
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--border);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: var(--text);
+}
+
+input[type="range"]:focus-visible {
+  outline: none;
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(193, 121, 77, 0.35);
+}
+
+/* Scrollbars — consistent thin/earthy treatment across desktop platforms */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Gallery */
+.gallery {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px clamp(16px, 3vw, 28px);
+}
+
+.gallery__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.gallery__add-photos {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gallery__add-photos .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.gallery__hint {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.gallery__view-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.gallery__size-slider {
+  width: 100px;
+}
+
+.gallery__empty {
+  color: var(--text-muted);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--tile-size, 160px), 1fr));
+  gap: 14px;
+}
+
+.gallery__item-wrap {
+  position: relative;
+}
+
+.gallery__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  align-items: stretch;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.gallery__item-wrap:hover .gallery__item {
+  background: var(--bg-elevated);
+  transform: translateY(-1px);
+}
+
+.gallery__item-edited {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgba(18, 15, 13, 0.55);
+  pointer-events: none;
+}
+
+.gallery__item-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(18, 15, 13, 0.65);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.85;
+}
+
+.gallery__item-remove:hover {
+  background: rgba(18, 15, 13, 0.85);
+  color: var(--danger);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery__item-remove {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .gallery__item-wrap:hover .gallery__item-remove {
+    opacity: 1;
+  }
+}
+
+.gallery__grid--square .gallery__item img,
+.gallery__grid--square .gallery__item-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.gallery__grid--full .gallery__item img,
+.gallery__grid--full .gallery__item-placeholder {
+  width: 100%;
+  height: var(--tile-size, 160px);
+  object-fit: contain;
+  background: var(--bg-canvas);
+  border-radius: var(--radius-sm);
+}
+
+.gallery__item-placeholder {
+  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--border) 50%, var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: gallery-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes gallery-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.gallery__item-name {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Editor */
+.editor {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.editor__canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.editor__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px clamp(12px, 2vw, 18px);
+  background: var(--bg-panel);
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.editor__filename {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 60px;
+}
+
+.editor__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.editor__canvas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--bg-canvas);
+  min-height: 0;
+}
+
+.editor__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.editor__placeholder {
+  color: var(--text-muted);
+}
+
+.editor__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  max-width: 360px;
+}
+
+.editor__error-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editor__rendering-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(18, 15, 13, 0.7);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.editor__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(18, 15, 13, 0.45);
+  border: none;
+  border-radius: var(--radius-md);
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.editor__nav--prev {
+  left: 12px;
+}
+
+.editor__nav--next {
+  right: 12px;
+}
+
+/* Only rely on hover-to-reveal where hover is actually a real input method;
+   touch/coarse-pointer platforms (Android, touchscreens) keep the nav visible. */
+@media (hover: hover) and (pointer: fine) {
+  .editor__nav {
+    opacity: 0;
+  }
+
+  .editor__canvas:hover .editor__nav {
+    opacity: 1;
+  }
+}
+
+.editor__sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--bg);
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Histogram show/hide toggle mobile-only (see the media query below).
+   On desktop the toggle stays hidden and the histogram is simply always shown. */
+.editor__sidebar-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.histogram-toggle {
+  display: none;
+}
+
+.sidebar-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.sidebar-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 9px 0;
+  border-radius: var(--radius-sm);
+}
+
+.sidebar-tab:hover {
+  color: var(--text);
+}
+
+.sidebar-tab--active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Panels / sliders */
+.panel {
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.panel__header h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.slider-row {
+  margin-bottom: 12px;
+}
+
+.slider-row:last-child {
+  margin-bottom: 0;
+}
+
+.slider-row__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.slider-row__value {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-row__track {
+  position: relative;
+}
+
+/* Touch-only double-tap-to-arm lock (see Slider.tsx). Desktop/mouse never renders
+   or needs this, the plain input above handles clicks and drags as it always has. */
+.slider-row__touch-lock {
+  display: none;
+}
+
+/* HSL panel */
+.hsl-swatches {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.hsl-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  padding: 0;
+  box-shadow: 0 0 0 2px transparent;
+  transition: box-shadow 0.15s ease;
+}
+
+.hsl-swatch--active {
+  box-shadow: 0 0 0 2px var(--text);
+}
+
+/* Color grading panel */
+.color-grading-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.color-grading-tab {
+  flex: 1;
+  font-size: 12px;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+}
+
+.color-grading-tab--active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Tone curve panel */
+.tone-curve {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  touch-action: none;
+}
+
+.tone-curve__backdrop {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.tone-curve__grid {
+  stroke: var(--border);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.tone-curve__diagonal {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.tone-curve__path {
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.tone-curve__point {
+  fill: var(--bg-elevated);
+  stroke-width: 2;
+  cursor: grab;
+}
+
+.tone-curve__point:active {
+  cursor: grabbing;
+}
+
+.tone-curve__hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Mobile-only bottom sheet for the curve editor (see the max-width media query
+   below). On desktop `.tone-curve-body` is `display: contents` so it's invisible to
+   layout — its children (tabs/svg/hint) render exactly as if they were direct
+   children of `.panel`. */
+.tone-curve-trigger {
+  display: none;
+}
+
+.tone-curve-sheet-backdrop {
+  display: none;
+}
+
+.tone-curve-sheet-header {
+  display: none;
+}
+
+.tone-curve-body {
+  display: contents;
+}
+
+/* Black & white mixer panel */
+.bw-mixer__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bw-mixer__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Presets */
+.preset-select-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.preset-select-row select {
+  flex: 1;
+}
+
+/* Subtle slow glow nudging you to save the current, un-captured edits. The
+   Save Preset toolbar button only exists at all while there's something to save
+   (see SavePresetButton.tsx). */
+@keyframes save-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(193, 121, 77, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(193, 121, 77, 0.16);
+  }
+}
+
+.save-pulse {
+  animation: save-pulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .save-pulse {
+    animation: none;
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+}
+
+.preset-list__delete {
+  color: var(--text-muted);
+}
+
+/* Match a style, canvas view */
+.style-match-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+}
+
+.style-match-view__panes {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 960px;
+  flex: 1;
+  min-height: 0;
+}
+
+.style-match-view__pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.style-match-view__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.style-match-view__frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-canvas);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.style-match-view__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.style-match-view__placeholder {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.style-match-view__dropzone {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  text-align: center;
+  padding: 20px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.style-match-view__dropzone:hover {
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+
+.style-match-view__dropzone .icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* The global drag-over state is toggled on .app by App.tsx's Tauri drop listener;
+   while the dropzone is showing, reflect it there so a drag actually looks droppable. */
+.app.drag-over .style-match-view__dropzone {
+  background: rgba(193, 121, 77, 0.14);
+  color: var(--text);
+}
+
+.style-match-view__clear {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(18, 15, 13, 0.6);
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  padding: 0;
+}
+
+.style-match-view__clear:hover {
+  background: rgba(18, 15, 13, 0.85);
+}
+
+.style-match-view__filename {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.style-match-view__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.style-match-view__intensity {
+  width: 100%;
+  max-width: 360px;
+}
+
+.preset-actions-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.preset-search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.preset-search-row input {
+  flex: 1;
+}
+
+.preset-search-row .icon-button .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.chevron {
+  width: 11px;
+  height: 11px;
+  transition: transform 0.15s ease;
+}
+
+.chevron--open {
+  transform: rotate(180deg);
+}
+
+.tag-menu {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.tag-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  padding: 5px 10px;
+  color: var(--text-muted);
+}
+
+.tag-menu__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 240px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 10px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.tag-filter-chip {
+  font-size: 10.5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+.tag-filter-chip--active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.preset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.preset-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 8px 0;
+}
+
+.preset-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin: 10px 0 4px;
+}
+
+.preset-group-label:first-child {
+  margin-top: 0;
+}
+
+.preset-item {
+  border-radius: var(--radius-sm);
+  padding: 6px 6px;
+}
+
+.preset-item:hover,
+.preset-item--active {
+  background: var(--bg-elevated);
+}
+
+.preset-item__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.preset-item__favorite {
+  border: none;
+  background: transparent;
+  padding: 3px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.preset-item__favorite .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.preset-item--active .preset-item__favorite,
+.preset-item__favorite:hover {
+  color: var(--accent);
+}
+
+.preset-item__name {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 3px 2px;
+  color: var(--text);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preset-item--active .preset-item__name {
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.preset-item__export {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 3px 4px;
+  flex-shrink: 0;
+}
+
+.preset-item__export:hover {
+  color: var(--accent);
+}
+
+.preset-item__export .icon {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.preset-item__delete {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 3px 5px;
+  flex-shrink: 0;
+}
+
+.preset-item__delete:hover {
+  color: var(--danger);
+}
+
+.preset-item__tag-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1px 2px 2px 27px;
+}
+
+.tag-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  padding: 2px 0;
+}
+
+.tag-toggle:hover {
+  color: var(--text);
+}
+
+.preset-item__tag-controls .tag-add {
+  border: none;
+  padding: 2px 0;
+}
+
+.tag-dropdown {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 2px 4px 27px;
+}
+
+.tag-dropdown__empty {
+  margin: 0;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px 1px 9px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.tag-chip__remove {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 0 3px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.tag-chip__remove:hover {
+  color: var(--danger);
+}
+
+.tag-add {
+  border: none;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  padding: 1px 9px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.tag-add:hover {
+  color: var(--accent);
+}
+
+.tag-input {
+  width: 84px;
+  border-radius: var(--radius-sm);
+  padding: 1px 9px;
+  font-size: 10.5px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 10, 9, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+
+.modal {
+  background: var(--bg-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 22px;
+  width: 320px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal h3 {
+  margin: 0;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.modal-field select {
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-status--ok {
+  color: var(--success);
+}
+
+.modal-status--error {
+  color: var(--danger);
+}
+
+/* Histogram */
+.histogram-canvas {
+  width: 100%;
+  height: 110px;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+/* Crop overlay */
+.crop-overlay {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.crop-overlay__rect {
+  position: absolute;
+  border: 1px solid var(--text);
+  background: rgba(236, 229, 216, 0.12);
+  box-shadow: 0 0 0 2000px rgba(18, 15, 13, 0.45);
+  pointer-events: none;
+}
+
+/* Before / after compare */
+.compare {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.compare__image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+.compare__before {
+  position: absolute;
+  inset: 0;
+}
+
+.compare__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+
+.compare__label {
+  position: absolute;
+  top: 12px;
+  background: rgba(18, 15, 13, 0.7);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.compare__label--before {
+  left: 12px;
+}
+
+.compare__label--after {
+  right: 12px;
+}
+
+/* Responsive: narrow / phone-class viewports (e.g. Android portrait) —
+   stack the editor instead of crushing the canvas against a fixed sidebar. */
+@media (max-width: 860px) {
+  .editor {
+    flex-direction: column;
+  }
+
+  /* The photo stays put. Only .editor__sidebar scrolls (below) instead of the
+     whole editor scrolling as one long page and carrying the image away with it.
+     70% keeps it the dominant element on screen, with the toolbar above and the
+     scrollable sidebar below sized off anything left. */
+  .editor__canvas-area {
+    flex: 0 0 70%;
+    min-height: 340px;
+  }
+
+  .editor__canvas {
+    min-height: 0;
+  }
+
+  .editor__sidebar {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .histogram-toggle {
+    display: inline-flex;
+  }
+
+  .histogram-wrap {
+    display: none;
+  }
+
+  .histogram-wrap--open {
+    display: block;
+  }
+
+  /* Side-by-side (not stacked) even on mobile, with tighter padding/gaps than
+     desktop so the photos themselves get as much of the available width as
+     possible. */
+  .style-match-view {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .style-match-view__panes {
+    gap: 8px;
+  }
+
+  .style-match-view__actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* "Drag & drop photos anywhere" doesn't apply on a touch device. Add Photos is
+     the only way in, so its button is the only thing left in that toolbar slot. */
+  .gallery__hint {
+    display: none;
+  }
+
+  /* Tone curve becomes a bottom sheet instead of an inline panel, see the note by
+     .tone-curve-body above and ToneCurvePanel.tsx. */
+  .tone-curve-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .tone-curve-trigger::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: rotate(-45deg);
+  }
+
+  /* Deliberately a faint scrim, not a real dim, the whole point of leaving the top
+     of the screen uncovered is so the photo stays clearly visible while the curve is
+     being adjusted. Still catches a tap-outside-to-dismiss over the full screen. */
+  .tone-curve-sheet-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.12);
+    z-index: 40;
+  }
+
+  .tone-curve-body {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Capped well under full height, the point is to give the curve room without
+       burying the photo it's shaping. The curve itself is also capped below so it
+       stays compact instead of stretching to full phone width. */
+    max-height: 48vh;
+    overflow-y: auto;
+    background: var(--bg-panel);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 14px;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+    z-index: 41;
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .tone-curve-body--open {
+    transform: translateY(0);
+  }
+
+  .tone-curve-body .tone-curve {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .tone-curve-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .tone-curve-sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+  }
+}
+
+/* Coarse pointers (touch) grow hit targets past the WCAG-ish 44px minimum */
+@media (pointer: coarse) {
+  button {
+    min-height: 40px;
+    padding: 8px 14px;
+  }
+
+  button.link-button {
+    min-height: auto;
+    padding: 4px 0;
+  }
+
+  .hsl-swatch {
+    width: 32px;
+    height: 32px;
+  }
+
+  .icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .gallery__item-remove {
+    width: 30px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: -9px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* The overlay, not the native input, owns touch on the track (see Slider.tsx):
+     it hit-tests against the thumb's own position so only a touch starting on the
+     knob can drag it, while a touch anywhere else on the track passes through as a
+     normal scroll instead of jumping the value the way a bare range input would. */
+  .slider-row__track input[type="range"] {
+    pointer-events: none;
+  }
+
+  .slider-row__touch-lock {
+    display: block;
+    position: absolute;
+    inset: -6px 0;
+    touch-action: pan-y;
+    z-index: 1;
+  }
+}
