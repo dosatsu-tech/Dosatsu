@@ -5,13 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-Everything below is the initial feature set — there's no earlier tagged release
-to diff against, so it's grouped as one list rather than a version-by-version
-history. Once `1.0.0` actually ships, rename this heading to `## [1.0.0] -
-<release date>` and start a fresh `## [Unreleased]` above it for whatever comes
-next.
+## [v1.0.0]
 
 ### Added
 

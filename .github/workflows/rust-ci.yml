@@ -3,6 +3,8 @@ name: Rust CI
 on:
   pull_request:
     branches: [main]
+    paths:
+      - "src-tauri/**"
   workflow_dispatch:
 
 jobs:
